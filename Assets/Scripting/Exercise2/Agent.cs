@@ -1,3 +1,4 @@
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class Agent : MonoBehaviour
@@ -11,7 +12,9 @@ public class Agent : MonoBehaviour
     [SerializeField]
     private Vector3 position;
     [SerializeField]
-    private PathManager pathManager;
+    private PathManager pathManager; 
+    [SerializeField]
+    private Rigidbody rb;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -51,7 +54,9 @@ public class Agent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += velocity * Time.deltaTime;
+        //rb.transform.position += velocity * Time.deltaTime;
+        rb.linearVelocity = velocity;
+        //transform.position += velocity * Time.deltaTime;
         position = transform.position;
     }
 }

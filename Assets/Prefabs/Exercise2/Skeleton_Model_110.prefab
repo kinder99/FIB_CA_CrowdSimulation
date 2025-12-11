@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: be3776e9bd6e31341b3490a035f6ea50, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: be3776e9bd6e31341b3490a035f6ea50, type: 3}
       propertyPath: m_LocalPosition.y
@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: be3776e9bd6e31341b3490a035f6ea50, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.772997
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: be3776e9bd6e31341b3490a035f6ea50, type: 3}
       propertyPath: m_LocalRotation.w
@@ -109,7 +109,7 @@ MonoBehaviour:
   worldDisplacement: {x: 0, y: 0, z: 0}
   localVelocity: {x: 0, y: 0, z: 0}
   character: {fileID: 3836549965390417372}
-  enableDebug: 0
+  enableDebug: 1
   fixOrientation: 1
 --- !u!114 &911080190141026659
 MonoBehaviour:
@@ -206,6 +206,7 @@ MonoBehaviour:
   goal: {x: 0, y: 0, z: 0}
   XBound: 20
   ZBound: 20
+  goalObj: {fileID: 0}
 --- !u!136 &981126155229083160
 CapsuleCollider:
   m_ObjectHideFlags: 0

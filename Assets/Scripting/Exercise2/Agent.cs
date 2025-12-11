@@ -21,6 +21,11 @@ public class Agent : MonoBehaviour
         this.GetComponent<CapsuleCollider>().radius = radius;
     }
 
+    public Vector3 GetPosition()
+    {
+        return position;
+    }
+
     public Vector3 GetVelocity()
     {
         return velocity;
@@ -29,16 +34,12 @@ public class Agent : MonoBehaviour
     public void SetVelocity(Vector3 vel)
     {
         this.velocity = vel;
+        rb.linearVelocity = vel;
     }
 
     public float GetMaxSpeed()
     {
         return maxSpeed;
-    }
-
-    public Vector3 GetPosition()
-    {
-        return position;
     }
 
     public float GetRadius()
@@ -51,11 +52,16 @@ public class Agent : MonoBehaviour
         return pathManager;
     }
 
+    public Rigidbody GetRigidbody()
+    {
+        return rb;
+    }
+
     // Update is called once per frame
     void Update()
     {
         //rb.transform.position += velocity * Time.deltaTime;
-        rb.linearVelocity = velocity;
+        //rb.linearVelocity = velocity;
         //transform.position += velocity * Time.deltaTime;
         position = transform.position;
     }

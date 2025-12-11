@@ -58,7 +58,7 @@ public class Tracker : MonoBehaviour
         return localDisplacement;
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         if (enableDebug) {
             //draw local velocity vector

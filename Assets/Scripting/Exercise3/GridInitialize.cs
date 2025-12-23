@@ -9,10 +9,13 @@ public class GridInitialize : MonoBehaviour
 
     [SerializeField] private bool debugGrid;
     private Grid grid;
+
+    public static GridInitialize instance = null;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Awake()
     {
         grid = new Grid(maxX, maxZ, 1, obstacle, 0);
+        instance = this;
     }
 
     // Update is called once per frame
@@ -31,7 +34,7 @@ public class GridInitialize : MonoBehaviour
             GridCell cell = grid.GetNodes()[i];
             for(int j = 0; j < grid.connections[i].connections.Count; j++)
             {
-                if (debugGrid) Gizmos.DrawLine(cell.GetCenter(), grid.connections[i].connections[j].toNode.GetCenter());
+                if (debugGrid) Gizmos.DrawLine(cell.getCenter(), grid.connections[i].connections[j].toNode.getCenter());
             }
         }
     }

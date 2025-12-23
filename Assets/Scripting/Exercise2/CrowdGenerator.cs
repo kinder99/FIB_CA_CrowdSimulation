@@ -9,6 +9,7 @@ public class CrowdGenerator : MonoBehaviour
     [SerializeField] private float XBound;
     [SerializeField] private float ZBound;
     public List<Agent> AgentList;
+    public Collider plane;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

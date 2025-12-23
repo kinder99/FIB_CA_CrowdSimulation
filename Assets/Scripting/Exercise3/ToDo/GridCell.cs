@@ -25,7 +25,7 @@ public class GridCell : Node
         return occupied;
     }
 
-    public Vector3 GetCenter()
+    public override Vector3 getCenter()
     {
         return center;
     }

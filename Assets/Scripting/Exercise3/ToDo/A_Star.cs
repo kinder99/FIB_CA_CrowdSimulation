@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace PathFinding{
 
@@ -28,7 +29,8 @@ namespace PathFinding{
 		// You can use (or not) this structure to keep track of the information that we need for each node
 			
 			public NodeRecord(){}
-			
+
+			public uint id;
 			public TNode node; 
 			public NodeRecord connection;	// connection traversed to reach this node 
 			public float costSoFar; // cost accumulated to reach this node
@@ -66,7 +68,8 @@ namespace PathFinding{
 		public virtual List<TNode> GetVisitedNodes(){
 			return visitedNodes.Keys.ToList();
 		}
-		
+
+		uint id = 0;
 		public override List<TNode> findpath(TGraph graph, TNode start, TNode end, THeuristic heuristic, ref int found)
 		{
 			List<TNode> path = new List<TNode>();
@@ -96,13 +99,70 @@ namespace PathFinding{
 
 					float cost = cur.costSoFar + conn.getCost();
 
-					bool visitedNeighbor
+					bool visitedNeighbor = visitedNodes.ContainsKey(conn.toNode);
+
+					if (visitedNeighbor && visitedNodes[conn.toNode].category == NodeRecordCategory.OPEN && cost < visitedNodes[conn.toNode].costSoFar)
+					{
+						NodeRecord better = new NodeRecord();
+						better.id = id++;
+						better.node = conn.toNode;
+						better.connection = cur;
+						better.costSoFar = cost;
+						better.estimatedTotalCost = visitedNodes[conn.toNode].estimatedTotalCost;
+						better.category = NodeRecordCategory.OPEN;
+						better.depth = cur.depth + 1;
+
+						openNodes.Remove(visitedNodes[conn.toNode]);
+						visitedNodes.Remove(conn.toNode);
+
+						openNodes.Add(better, better);
+						visitedNodes[conn.toNode] = better;
+					}
+
+					if(!visitedNeighbor)
+					{
+						NodeRecord nei = new NodeRecord();
+						nei.id = id++;
+						nei.node = conn.toNode;
+						nei.connection = cur;
+						nei.costSoFar = cost;
+						nei.estimatedTotalCost = heuristic.estimateCost(nei.node);
+						nei.category = NodeRecordCategory.OPEN;
+						nei.depth = cur.depth + 1;
+
+						openNodes.Add(nei, nei);
+						visitedNodes[conn.toNode] = nei;
+					}
 				}
+
+				if(openNodes.Count == 0)
+				{
+					found = -1;
+					return null;
+				}
+			}
+
+			NodeRecord pathNode = openNodes.ElementAt(0).Value;
+			while(pathNode.connection != null)
+			{
+				path.Insert(0, pathNode.node);
+				pathNode = pathNode.connection;
 			}
 
             return path;
 		}
 
-	};
+		public List<Vector3> getOpenCenters()
+		{
+			List<Vector3> centers = new List<Vector3>();
 
+			for(int i = 0; i < openNodes.Count; i++)
+			{
+				TNode node = openNodes.ElementAt (i).Value.node;
+				centers.Add(node.getCenter());
+			}
+
+			return centers;
+		}
+	};
 }

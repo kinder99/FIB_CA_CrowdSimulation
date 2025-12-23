@@ -88,7 +88,7 @@ namespace PathFinding{
             openNodes.Add(startRecord, startRecord);
             visitedNodes[start] = startRecord;
 
-			while (openNodes.ElementAt(0).Value.node != null) {
+			while (openNodes.ElementAt(0).Value.node != end) {
 				NodeRecord cur = openNodes.ElementAt(0).Value;
 				openNodes.RemoveAt(0);
 				closed.Add(cur);

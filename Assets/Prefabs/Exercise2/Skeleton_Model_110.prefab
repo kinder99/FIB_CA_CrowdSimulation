@@ -103,14 +103,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b21839145fdd954c87f52362d73b212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tracker
-  prevPosition: {x: 0, y: 0, z: 0}
-  forward: {x: 0, y: 0, z: 0}
-  localDisplacement: {x: 0, y: 0, z: 0}
-  worldDisplacement: {x: 0, y: 0, z: 0}
-  localVelocity: {x: 0, y: 0, z: 0}
-  character: {fileID: 3836549965390417372}
-  enableDebug: 1
-  fixOrientation: 1
 --- !u!114 &911080190141026659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,8 +115,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5faeadf746e7a0344b54bd968244fe77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Locomotion
-  anim: {fileID: 7536164459441523996}
-  tracker: {fileID: 2059451311203229601}
+  _animator: {fileID: 7536164459441523996}
+  _tracker: {fileID: 2059451311203229601}
+  _interpolationSpeedFactor: 0.05
+  _interpolationOrientationFactor: 0.05
 --- !u!65 &6073587309903117575
 BoxCollider:
   m_ObjectHideFlags: 0

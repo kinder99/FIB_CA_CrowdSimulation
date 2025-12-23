@@ -20,13 +20,17 @@ public class Grid : FiniteGraph<GridCell, CellConnection, GridConnections>
 	[SerializeField] protected int numColumns;
     protected int numCells;
 
-    //protected List<GridCell> cells;
+    public List<GridCell> availables;
     //protected List<Connection<GridCell>> connections;
     protected GridConnections gridConnections;
 
+    public float cellSize;
+
     // Example Constructor function declaration
-    public Grid(int maxX, int maxZ, float cellSize, GameObject obs, float height = 0) : base()
+    public Grid(int maxX, int maxZ, float size, GameObject obs, float height = 0) : base()
     {
+        cellSize = size;
+        availables = new List<GridCell>();
         numColumns = maxZ; numRows = maxX; numCells = maxX * maxZ; gridHeight = height;
         sizeOfCell = 1;
 
@@ -39,6 +43,11 @@ public class Grid : FiniteGraph<GridCell, CellConnection, GridConnections>
                 GridCell cell = new GridCell(id, i, j, obs);
                 nodes.Add(cell);
                 connections.Add(new GridConnections());
+
+                if (!nodes[^1].IsOccupied())
+                {
+                    availables.Add(cell);
+                }
             }
         }
 

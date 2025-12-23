@@ -1,0 +1,68 @@
+using UnityEditor.Rendering;
+using UnityEngine;
+
+public class Agent_bis : MonoBehaviour
+{
+    [SerializeField]
+    private float maxSpeed;
+    [SerializeField]
+    private float radius;
+    [SerializeField]
+    public Vector3 velocity;
+    [SerializeField]
+    private Vector3 position;
+    [SerializeField]
+    public AgentPath pathManager; 
+    [SerializeField]
+    private Rigidbody rb;
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        this.GetComponent<CapsuleCollider>().radius = radius;
+    }
+
+    public Vector3 GetPosition()
+    {
+        return position;
+    }
+
+    public Vector3 GetVelocity()
+    {
+        return velocity;
+    }
+
+    public void SetVelocity(Vector3 vel)
+    {
+        this.velocity = vel;
+        rb.linearVelocity = vel;
+    }
+
+    public float GetMaxSpeed()
+    {
+        return maxSpeed;
+    }
+
+    public float GetRadius()
+    {
+        return radius;
+    }
+
+    public AgentPath GetPathManager()
+    {
+        return pathManager;
+    }
+
+    public Rigidbody GetRigidbody()
+    {
+        return rb;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //rb.transform.position += velocity * Time.deltaTime;
+        //rb.linearVelocity = velocity;
+        //transform.position += velocity * Time.deltaTime;
+        position = transform.position;
+    }
+}

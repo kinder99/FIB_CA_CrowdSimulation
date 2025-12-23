@@ -12,7 +12,7 @@ public class GridCell : Node
 		Z = z;
         occupied = (Random.Range(0.0f, 1.0f) <= 0.2);
         Debug.Log(occupied);
-        center = new Vector3(X + 0.5f, 0.0f, Z + 0.5f);
+        center = new Vector3(X, 0.0f, Z);
         obstacle = obs;
         if (occupied) { GameObject.Instantiate(obs, new Vector3(X,0,Z), Quaternion.identity); }
     }

@@ -511,6 +511,7 @@ MonoBehaviour:
   obstacle: {fileID: 9221924595412785911, guid: c9dd8f708068f62418a4c6356e57f69d, type: 3}
   maxX: 50
   maxZ: 50
+  debugGrid: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

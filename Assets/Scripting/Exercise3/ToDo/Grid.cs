@@ -36,7 +36,9 @@ public class Grid : FiniteGraph<GridCell, CellConnection, GridConnections>
             for (int j = 0; j < maxX; j++)
             {
                 int id = i * maxZ + j;
-                nodes.Add(new GridCell(id, i, j, obs));
+                GridCell cell = new GridCell(id, i, j, obs);
+                nodes.Add(cell);
+                connections.Add(new GridConnections());
             }
         }
 
@@ -49,21 +51,21 @@ public class Grid : FiniteGraph<GridCell, CellConnection, GridConnections>
                 GridCell above = nodes[id+maxX];
                 GridCell rightAbove = nodes[id+maxX+1];
 
-                if(nodes[id].IsOccupied() == right.IsOccupied() == false)
+                if (!nodes[id].IsOccupied() && !right.IsOccupied())
                 {
-                    CellConnection connectionRight = new CellConnection(nodes[id], right);
-                    gridConnections.Add(connectionRight);
+                    connections[id].connections.Add(new CellConnection(nodes[id],right));
+                    connections[id+1].connections.Add(new CellConnection(right, nodes[id]));
                 }
-                if (nodes[id].IsOccupied() == above.IsOccupied() == false)
+                if (!nodes[id].IsOccupied() && !above.IsOccupied())
                 {
-                    CellConnection connectionAbove = new CellConnection(nodes[id], above);
-                    gridConnections.Add(connectionAbove);
+                    connections[id].connections.Add(new CellConnection(nodes[id], above));
+                    connections[id+maxX].connections.Add(new CellConnection(above, nodes[id]));
                 }
-                if (nodes[id].IsOccupied() == rightAbove.IsOccupied() == false)
+                /*if (!nodes[id].IsOccupied() && !rightAbove.IsOccupied())
                 {
-                    CellConnection connectionRightAbove = new CellConnection(nodes[id], rightAbove);
-                    gridConnections.Add(connectionRightAbove);
-                }
+                    connections[id].connections.Add(new CellConnection(nodes[id], rightAbove));
+                    connections[id+maxX+1].connections.Add(new CellConnection(rightAbove, nodes[id]));
+                }*/
             }
         }
         connections.Add(gridConnections);
@@ -76,6 +78,11 @@ public class Grid : FiniteGraph<GridCell, CellConnection, GridConnections>
 
         // TO IMPLEMENT
 
+    }
+
+    public List<GridCell> GetNodes()
+    {
+        return nodes;
     }
 
 };

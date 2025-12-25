@@ -1,4 +1,4 @@
-using UnityEditor.Rendering;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Agent_bis : MonoBehaviour
@@ -25,10 +25,13 @@ public class Agent_bis : MonoBehaviour
     public float avoidWeight;
 
     public Vector3 avoidanceForce;
+
+    private List<GameObject> triggerContents;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         this.GetComponent<CapsuleCollider>().radius = radius;
+        triggerContents = new List<GameObject>();
     }
 
     public Vector3 GetPosition()
@@ -73,7 +76,6 @@ public class Agent_bis : MonoBehaviour
         return rb;
     }
 
-    // Update is called once per frame
     void Update()
     {
         //rb.transform.position += velocity * Time.deltaTime;
@@ -87,16 +89,32 @@ public class Agent_bis : MonoBehaviour
         return avoidanceForce;
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Obstacle"))
+            triggerContents.Add(other.gameObject);
+    }
+
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Obstacle"))
-            Avoidance(other.transform);
+        float minDist = 9999f;
+        GameObject toCheck = null;
+        foreach(GameObject go in triggerContents)
+        {
+            if(Vector3.Distance(this.transform.position, go.transform.position) < minDist)
+            {
+                toCheck = go;
+            }
+        }
+        if(toCheck != null)
+            Avoidance(toCheck.transform);
     }
 
     private void OnTriggerExit(Collider other)
     {
         if(other.CompareTag("Obstacle"))
             avoidanceForce = Vector3.zero;
+            triggerContents.Remove(other.gameObject);
     }
 
     public void Avoidance(Transform other)

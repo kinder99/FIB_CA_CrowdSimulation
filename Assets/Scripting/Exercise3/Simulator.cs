@@ -17,14 +17,17 @@ public class Simulator : MonoBehaviour
         return _instance;
     }
 
-    [HideInInspector]
     public List<Agent_bis> agents = new List<Agent_bis>();
 
-    public float velocity = 2f;
-    public float maxForce = 10f;
-    private float maxSpeed = 4.73f;
+    public float velocity = 3f;
+    public float maxForce = 5f;
+    private float maxSpeed = 3f;
 
     public float[] lowestTs = new float[100];
+
+    public Transform goalPos;
+
+    private Vector3 steering;
 
     // Update is called once per frame
     void Update()
@@ -58,10 +61,23 @@ public class Simulator : MonoBehaviour
 
         foreach (Agent_bis agent in agents)
         {
-            Vector3 goal3d = new Vector3(agent.GetPathManager().goal.x, agent.transform.position.y, agent.GetPathManager().goal.y);
+            Vector3 goal = new Vector3(agent.GetPathManager().goal.x, agent.transform.position.y, agent.GetPathManager().goal.y);
+            if (goalPos !=  null)
+                goal = goalPos.position;
 
-        
-            agent.SetVelocity((goal3d - agent.transform.position).normalized * velocity);
+            if (agent.isSteering)
+            {
+                steering = ComputeSteeringForces(agent, goal);
+
+                Vector3 force = Truncate(steering, maxForce);
+                Vector3 accel = force / agent.GetRigidbody().mass;
+                agent.AddVelocity(accel * timestep);
+                agent.SetVelocity(Truncate(agent.GetVelocity(), maxSpeed));
+            }
+            else
+            {
+                agent.SetVelocity((goal - agent.transform.position).normalized * velocity);
+            }
         }
     }
     Vector3 Truncate(Vector3 v, float max)
@@ -70,45 +86,51 @@ public class Simulator : MonoBehaviour
         return v.normalized * size;
     }
 
-    /*Vector3 ComputeSteeringForces(Agent a, Vector3 target)
+    Vector3 ComputeSteeringForces(Agent_bis a, Vector3 target)
     {
-        GridInitialize gridGenerator = GridInitialize.instance;
+        //GridInitialize gridInitiialize = GridInitialize.instance;
         Vector3 steeringForces = Vector3.zero;
 
-        if (gridGenerator == null) return steeringForces;
+        //if (gridInitiialize == null) return steeringForces;
 
-        if (gridGenerator.doSeek) steeringForces += Seek(a, target) * gridGenerator.seekWeight;
-        else a.velocity = (target - a.transform.position).normalized * velocity;
+        //if (gridInitiialize.seekingAgents) steeringForces += Seek(a, target) * gridInitiialize.seekWeight;
+        //else a.velocity = (target - a.transform.position).normalized * velocity;
 
-        if (gridGenerator.doAvoid) steeringForces += Avoid(a, target) * gridGenerator.avoidWeight;
-        if (gridGenerator.doDynamicAvoid) steeringForces += UnalignedCollisionAvoidance(a, target) * gridGenerator.dynamicAvoidWeight;
-
+        if(a.isSeeking) steeringForces += Seek(a, target);
+        if (a.isAvoiding) steeringForces += Avoid(a);
+        //if (gridGenerator.doDynamicAvoid) steeringForces += UnalignedCollisionAvoidance(a, target) * gridGenerator.dynamicAvoidWeight;
 
         return steeringForces;
     }
 
-    Vector3 Seek(Agent a, Vector3 target)
+    Vector3 Seek(Agent_bis a, Vector3 target)
     {
-        Vector3 desiredVelocity = (target - a.transform.position).normalized * velocity;
+        Vector3 desiredVelocity = (target - a.transform.position).normalized * a.GetMaxSpeed();
         return desiredVelocity - a.velocity;
     }
 
-    Vector3 Avoid(Agent a, Vector3 target)
+    Vector3 Avoid(Agent_bis a)
+    {
+        return a.GetAvoidanceForce();
+    }
+
+    // Wall avoidance, not really useful
+    /*Vector3 Avoid(Agent_bis a, Vector3 target)
     {
         float radius = a.GetComponent<Collider>().bounds.extents.x;
         Vector3 agentPos = a.transform.position;
-        float distanceToGoal = Vector2.Distance(a.pathManager.goal, new Vector2(agentPos.x, agentPos.z));
+        float distanceToGoal = Vector2.Distance(a.GetPathManager().goal, new Vector2(agentPos.x, agentPos.z));
 
         float closestDistance = 9999f;
         float closestDistanceProjection = 0f;
 
         // Check potential collisions with obstacles (walls)
-        List<GridCell> gridNodes = GridGenerator._instance.grid.nodes;
-        float wallRadius = GridGenerator._instance.grid.cellSize.magnitude / 1.7f;  // slightly greater (1.7 instead of 2) to have a lower maximum error
+        List<GridCell> gridNodes = GridInitialize.instance.grid.nodes;
+        float wallRadius = GridInitialize.instance.grid.cellSize / 1.7f;  // slightly greater (1.7 instead of 2) to have a lower maximum error
         bool closestObstacleIsWall = false; // if a closest wall is detected, the radius for walls will be used instead of the agents one
         for (int i = 0; i < gridNodes.Count; i++)
         {
-            if (!gridNodes[i].isBlocked()) continue;
+            if (!gridNodes[i].IsOccupied()) continue;
 
             // Notice ref closestDistance and closestDistanceProjection. These will be updated if necessary.
             closestObstacleIsWall = GetProjectedDistanceIfCloser(a.transform, radius, gridNodes[i].getCenter(),
@@ -265,11 +287,13 @@ public class Simulator : MonoBehaviour
     void OnDrawGizmos()
     {
         // draw lines to intersection points
-        for (int i = 0; i < agents.Count; i++)
+
+        foreach(Agent_bis agent in agents)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawLine(agents[i].transform.position, agents[i].transform.position + agents[i].velocity * lowestTs[i]);
-            lowestTs[i] = 0f;
+            Gizmos.DrawLine(agent.transform.position, agent.transform.position + agent.GetAvoidanceForce());
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(agent.transform.position, agent.transform.position + agent.GetVelocity());
         }
     }
 

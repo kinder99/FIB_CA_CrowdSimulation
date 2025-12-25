@@ -90,7 +90,6 @@ public class AgentPath : MonoBehaviour
         {
             startNode = path[^1];
         }
-        Debug.Log("path found:" + found);
         return found;
     }
 

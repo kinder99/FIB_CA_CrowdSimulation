@@ -18,6 +18,9 @@ public class GridInitialize : MonoBehaviour
     public Collider plane;
 
     public static GridInitialize instance = null;
+
+    public bool seekingAgents;
+    public float seekWeight;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Awake()
     {

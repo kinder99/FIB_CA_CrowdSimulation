@@ -532,6 +532,8 @@ MonoBehaviour:
   Agent: {fileID: 406186967820136843, guid: 2933680b2bee6d64e900a227fa51503f, type: 3}
   agentVelocity: 2
   plane: {fileID: 1478428880}
+  seekingAgents: 1
+  seekWeight: 1
 --- !u!4 &1518730807
 Transform:
   m_ObjectHideFlags: 0

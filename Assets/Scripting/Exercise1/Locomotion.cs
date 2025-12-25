@@ -28,8 +28,6 @@ public class Locomotion : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        /*_animator = gameObject.GetComponent<Animator>();
-        _tracker = gameObject.GetComponent<Tracker>();*/
         _prevSpeedXZ = _tracker.getSpeedXZ();
     }
 
@@ -39,7 +37,6 @@ public class Locomotion : MonoBehaviour
         _currSpeedXZ = Vector2.Lerp(_currSpeedXZ, _tracker.getSpeedXZ(), _interpolationSpeedFactor);
         _currSpeedXZ = _tracker.getSpeedXZ();
         _animator.SetFloat("VelX", _currSpeedXZ.x);
-        // range between 'idle' and 'walk' interpolation is not correct. try to correct it.
         _animator.SetFloat("VelY", _currSpeedXZ.y);
         transform.rotation = Quaternion.Euler(0f, Mathf.LerpAngle(transform.eulerAngles.y, _tracker.getEulerY(), _interpolationOrientationFactor), 0f);
     }

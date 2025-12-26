@@ -73,7 +73,7 @@ public class AgentPath : MonoBehaviour
         GridCell goalNode = grid.availables[Random.Range(0,grid.availables.Count-1)];
         goal = new Vector2(goalNode.getCenter().x, goalNode.getCenter().z);
 
-        GridHeuristic heuristic = new GridHeuristic(goalNode);
+        GridHeuristic heuristic = new(goalNode);
 
         if(startNode == null)
         {

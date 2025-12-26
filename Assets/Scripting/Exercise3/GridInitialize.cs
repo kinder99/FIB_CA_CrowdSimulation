@@ -21,6 +21,12 @@ public class GridInitialize : MonoBehaviour
 
     public bool seekingAgents;
     public float seekWeight;
+
+    public bool obstacleAvoidingAgents;
+    public float obstacleAvoidanceWeight;
+
+    public bool agentAvoidingAgents;
+    public float agentAvoidanceWeight;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Awake()
     {
@@ -34,6 +40,12 @@ public class GridInitialize : MonoBehaviour
 
         Simulator sim = Simulator.GetInstance();
         sim.velocity = agentVelocity;
+        sim.doSeek = seekingAgents;
+        sim.seekWeight = seekWeight;
+        sim.doAvoidObstacles = obstacleAvoidingAgents;
+        sim.avoidObstaclesWeight = obstacleAvoidanceWeight;
+        sim.doAvoidOtherAgents = agentAvoidingAgents;
+        sim.avoidAgentWeight = agentAvoidanceWeight;
         ref List<Agent_bis> agents = ref sim.agents;
         InstantiateCrowd(agents);
         instance = this;
@@ -58,7 +70,7 @@ public class GridInitialize : MonoBehaviour
             }
 
             GridCell spawn = grid.availables[idx];
-            Agent_bis agentInstance = GameObject.Instantiate(Agent,spawn.getCenter(), Quaternion.identity);
+            Agent_bis agentInstance = GameObject.Instantiate(Agent,spawn.getCenter()+new Vector3(0f,-0.5f,0f), Quaternion.identity);
             agents.Add(agentInstance);
         }
     }

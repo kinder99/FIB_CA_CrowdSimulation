@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 3rd_Agent
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: be3776e9bd6e31341b3490a035f6ea50, type: 3}
+      propertyPath: m_TagString
+      value: Agent
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: be3776e9bd6e31341b3490a035f6ea50, type: 3}
       propertyPath: m_Controller
       value: 
@@ -223,7 +227,12 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   pathManager: {fileID: 5702036841361495942}
   rb: {fileID: -2460453001503940063}
+  isSteering: 0
   isSeeking: 0
+  seekWeight: 0
+  isAvoiding: 0
+  avoidWeight: 0
+  avoidanceForce: {x: 0, y: 0, z: 0}
 --- !u!95 &7536164459441523996 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: be3776e9bd6e31341b3490a035f6ea50, type: 3}

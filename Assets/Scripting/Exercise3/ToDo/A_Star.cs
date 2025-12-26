@@ -43,13 +43,12 @@ namespace PathFinding{
         {
             public override int Compare(NodeRecord x, NodeRecord y)
             {
+				//no comparison for same object
                 if (ReferenceEquals(x, y)) return 0;
 
                 float costX = 0f, costY = 0f;
-
-                // take density into account too
-                if (x != null) costX = x.costSoFar + x.estimatedTotalCost + 1000f;
-                if (y != null) costY = y.costSoFar + y.estimatedTotalCost + 1000f;
+                if (x != null) costX = x.costSoFar + x.estimatedTotalCost + 1000f * x.node.density;
+                if (y != null) costY = y.costSoFar + y.estimatedTotalCost + 1000f * y.node.density;
                 if (costX.CompareTo(costY) == 0)
                 {
                     return 1;
@@ -77,13 +76,15 @@ namespace PathFinding{
 			openNodes = new SortedList<NodeRecord, NodeRecord>(new NodeRecordComparer());
 			List<NodeRecord> closed = new List<NodeRecord>();
 
-            NodeRecord startRecord = new NodeRecord();
-            startRecord.node = start;
-            startRecord.connection = null;
-            startRecord.costSoFar = 0f;
-            startRecord.estimatedTotalCost = heuristic.estimateCost(start);
-            startRecord.category = NodeRecordCategory.OPEN;
-            startRecord.depth = 0;
+            NodeRecord startRecord = new()
+            {
+                node = start,
+                connection = null,
+                costSoFar = 0f,
+                estimatedTotalCost = heuristic.estimateCost(start),
+                category = NodeRecordCategory.OPEN,
+                depth = 0
+            };
 
             openNodes.Add(startRecord, startRecord);
             visitedNodes[start] = startRecord;
@@ -96,23 +97,23 @@ namespace PathFinding{
 				for(int i = 0; i < graph.connections[cur.node.id].Count(); i++)
 				{
 					TConnection conn = graph.connections[cur.node.id].connections[i];
-
 					float cost = cur.costSoFar + conn.getCost();
-
 					bool visitedNeighbor = visitedNodes.ContainsKey(conn.toNode);
 
 					if (visitedNeighbor && visitedNodes[conn.toNode].category == NodeRecordCategory.OPEN && cost < visitedNodes[conn.toNode].costSoFar)
 					{
-						NodeRecord better = new NodeRecord();
-						better.id = id++;
-						better.node = conn.toNode;
-						better.connection = cur;
-						better.costSoFar = cost;
-						better.estimatedTotalCost = visitedNodes[conn.toNode].estimatedTotalCost;
-						better.category = NodeRecordCategory.OPEN;
-						better.depth = cur.depth + 1;
+                        NodeRecord better = new()
+                        {
+                            id = id++,
+                            node = conn.toNode,
+                            connection = cur,
+                            costSoFar = cost,
+                            estimatedTotalCost = visitedNodes[conn.toNode].estimatedTotalCost,
+                            category = NodeRecordCategory.OPEN,
+                            depth = cur.depth + 1
+                        };
 
-						openNodes.Remove(visitedNodes[conn.toNode]);
+                        openNodes.Remove(visitedNodes[conn.toNode]);
 						visitedNodes.Remove(conn.toNode);
 
 						openNodes.Add(better, better);
@@ -121,14 +122,16 @@ namespace PathFinding{
 
 					if(!visitedNeighbor)
 					{
-						NodeRecord nei = new NodeRecord();
-						nei.id = id++;
-						nei.node = conn.toNode;
-						nei.connection = cur;
-						nei.costSoFar = cost;
-						nei.estimatedTotalCost = heuristic.estimateCost(nei.node);
-						nei.category = NodeRecordCategory.OPEN;
-						nei.depth = cur.depth + 1;
+						NodeRecord nei = new()
+						{
+							id = id++,
+							node = conn.toNode,
+							connection = cur,
+							costSoFar = cost,
+							category = NodeRecordCategory.OPEN,
+							depth = cur.depth + 1
+                        };
+                        nei.estimatedTotalCost = heuristic.estimateCost(nei.node);
 
 						openNodes.Add(nei, nei);
 						visitedNodes[conn.toNode] = nei;
@@ -146,23 +149,11 @@ namespace PathFinding{
 			while(pathNode.connection != null)
 			{
 				path.Insert(0, pathNode.node);
+				pathNode.node.density++;
 				pathNode = pathNode.connection;
 			}
 
             return path;
-		}
-
-		public List<Vector3> getOpenCenters()
-		{
-			List<Vector3> centers = new List<Vector3>();
-
-			for(int i = 0; i < openNodes.Count; i++)
-			{
-				TNode node = openNodes.ElementAt (i).Value.node;
-				centers.Add(node.getCenter());
-			}
-
-			return centers;
 		}
 	};
 }

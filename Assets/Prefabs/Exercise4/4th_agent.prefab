@@ -50,7 +50,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: be3776e9bd6e31341b3490a035f6ea50, type: 3}
       propertyPath: m_Name
-      value: 3rd_Agent
+      value: 4th_agent
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: be3776e9bd6e31341b3490a035f6ea50, type: 3}
+      propertyPath: m_TagString
+      value: Agent
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: be3776e9bd6e31341b3490a035f6ea50, type: 3}
       propertyPath: m_Controller
@@ -138,8 +142,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 6}
-  m_Center: {x: 0, y: 1.2, z: 3.5}
+  m_Size: {x: 0.3, y: 0.5, z: 3}
+  m_Center: {x: 0, y: 1.2, z: 1.75}
 --- !u!54 &-2460453001503940063
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -186,7 +190,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.3
+  m_Radius: 0.2
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
@@ -217,8 +221,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b3984085856c3f42ba46a3929619e95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Agent_bis
-  maxSpeed: 5
-  radius: 0.3
+  maxSpeed: 2
+  radius: 0.15
   velocity: {x: 0, y: 0, z: 0}
   position: {x: 0, y: 0, z: 0}
   pathManager: {fileID: 5702036841361495942}
@@ -226,8 +230,12 @@ MonoBehaviour:
   isSteering: 1
   isSeeking: 1
   seekWeight: 1
-  isAvoiding: 0
-  avoidWeight: 0
+  isAvoiding: 1
+  avoidWeight: 1
+  isAvoidingAgents: 1
+  agentAvoidWeight: 1
+  avoidanceForce: {x: 0, y: 0, z: 0}
+  agentAvoidanceForce: {x: 0, y: 0, z: 0}
 --- !u!95 &7536164459441523996 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: be3776e9bd6e31341b3490a035f6ea50, type: 3}

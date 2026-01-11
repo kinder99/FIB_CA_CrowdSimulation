@@ -125,11 +125,6 @@ public class Simulator : MonoBehaviour
             Gizmos.DrawLine(agent.transform.position, agent.transform.position + agent.GetVelocity());
             Gizmos.color = Color.green;
             Gizmos.DrawLine(agent.transform.position, agent.transform.position + agent.GetAgentAvoidanceForce());
-            Gizmos.color = Color.purple;
-            if (goalPos == null)
-            {
-                Gizmos.DrawLine(transform.position, new Vector3(agent.GetPathManager().goal.x, 0, agent.GetPathManager().goal.y));
-            }
         }
     }
 

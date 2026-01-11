@@ -24,8 +24,6 @@ public class Simulator : MonoBehaviour
     public float maxForce = 5f;
     private float maxSpeed = 3f;
 
-    public float[] lowestTs = new float[100];
-
     public Transform goalPos;
 
     private Vector3 steering;
@@ -64,7 +62,7 @@ public class Simulator : MonoBehaviour
         foreach (Agent_bis agent in agents)
         {
             Vector3 goal = new Vector3(agent.GetPathManager().goal.x, agent.transform.position.y, agent.GetPathManager().goal.y);
-            if (goalPos !=  null)
+            if (goalPos !=  null) //if a game object has been manually assigned as goal, we override
                 goal = goalPos.position;
 
             if (agent.isSteering)
@@ -127,6 +125,11 @@ public class Simulator : MonoBehaviour
             Gizmos.DrawLine(agent.transform.position, agent.transform.position + agent.GetVelocity());
             Gizmos.color = Color.green;
             Gizmos.DrawLine(agent.transform.position, agent.transform.position + agent.GetAgentAvoidanceForce());
+            Gizmos.color = Color.purple;
+            if (goalPos == null)
+            {
+                Gizmos.DrawLine(transform.position, new Vector3(agent.GetPathManager().goal.x, 0, agent.GetPathManager().goal.y));
+            }
         }
     }
 

@@ -417,6 +417,7 @@ MonoBehaviour:
   XBound: 20
   ZBound: 20
   AgentList: []
+  plane: {fileID: 151390567}
 --- !u!1 &910658284
 GameObject:
   m_ObjectHideFlags: 0

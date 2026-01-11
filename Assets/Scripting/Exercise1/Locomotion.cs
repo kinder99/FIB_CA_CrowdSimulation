@@ -20,24 +20,21 @@ public class Locomotion : MonoBehaviour
 
     public Animator _animator;
     public Tracker _tracker;
-    private Vector2 _prevSpeedXZ;
-    private Vector2 _currSpeedXZ;
-    public float _interpolationSpeedFactor = 0.05f;
-    public float _interpolationOrientationFactor = 0.2f;
+    private Vector2 _curVelocity;
+    public float _interpolationVelocityFactor = 0.05f;
+    public float _interpolationOrientationFactor = 0.05f;
 
     // Start is called before the first frame update
     void Start()
     {
-        _prevSpeedXZ = _tracker.getSpeedXZ();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        _currSpeedXZ = Vector2.Lerp(_currSpeedXZ, _tracker.getSpeedXZ(), _interpolationSpeedFactor);
-        _currSpeedXZ = _tracker.getSpeedXZ();
-        _animator.SetFloat("VelX", _currSpeedXZ.x);
-        _animator.SetFloat("VelY", _currSpeedXZ.y);
-        transform.rotation = Quaternion.Euler(0f, Mathf.LerpAngle(transform.eulerAngles.y, _tracker.getEulerY(), _interpolationOrientationFactor), 0f);
+        _curVelocity = Vector2.Lerp(_curVelocity, _tracker.GetVelocityXZ(), _interpolationVelocityFactor);
+        _animator.SetFloat("VelX", _curVelocity.x);
+        _animator.SetFloat("VelY", _curVelocity.y);
+        transform.rotation = Quaternion.Euler(0f, Mathf.LerpAngle(transform.eulerAngles.y, _tracker.GetEulerAngle(), _interpolationOrientationFactor), 0f);
     }
 }

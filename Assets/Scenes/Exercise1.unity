@@ -464,9 +464,13 @@ PrefabInstance:
       propertyPath: _animator
       value: 
       objectReference: {fileID: 1699169004}
+    - target: {fileID: 911080190141026659, guid: c2a5df8e95123ea4ea67760c03321dae, type: 3}
+      propertyPath: _interpolationVelocityFactor
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 3836549965390417372, guid: c2a5df8e95123ea4ea67760c03321dae, type: 3}
       propertyPath: m_Name
-      value: Skeleton_Model_110
+      value: Agent
       objectReference: {fileID: 0}
     - target: {fileID: 4500777667436631910, guid: c2a5df8e95123ea4ea67760c03321dae, type: 3}
       propertyPath: m_LocalPosition.x

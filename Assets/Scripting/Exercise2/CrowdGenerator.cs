@@ -17,11 +17,6 @@ public class CrowdGenerator : MonoBehaviour
         StartCoroutine(SimulationCoroutine());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
     public void InstantiateCrowd()
     {
         for (int i = 0; i < MaxAgentNumber; i++)

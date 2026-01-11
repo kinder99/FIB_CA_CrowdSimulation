@@ -181,13 +181,4 @@ public class Agent_bis : MonoBehaviour
             agentAvoidanceForce = -agentAvoidanceForce;
         }
     }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        if (pathManager != null)
-        {
-            Gizmos.DrawLine(transform.position, new Vector3(pathManager.goal.x, 0, pathManager.goal.y));
-        }
-    }
 }
